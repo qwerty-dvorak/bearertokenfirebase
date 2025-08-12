@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Firebase Google Sign-In</title>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-auth-compat.js"></script>
+  <style>
+    /* Basic styling */
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 800px;
+      margin: 60px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    button {
+      margin: 10px 0;
+      padding: 10px 16px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    #google-signin {
+      background: #4285F4;
+      color: #fff;
+    }
+    #copy-token {
+      background: #6c757d;
+      color: #fff;
+    }
+    pre#token {
+      background: #f7f7f7;
+      padding: 10px;
+      border-radius: 4px;
+      min-height: 120px; /* Increased height */
+      max-height: 320px; /* Optional: limit max height */
+      overflow-x: auto;
+      margin-bottom: 10px;
+      text-align: left;
+      word-break: break-all;
+      white-space: pre-wrap; /* Enable wrapping */
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Google Sign-In</h1>
+    <button id="google-signin">Sign in with Google</button>
+    <div class="token-container">
+      <pre id="token"></pre>
+      <button id="copy-token" disabled>Copy Token</button>
+    </div>
+  </div>
+  <script src="main.js"></script>
+  <script>
+    // Enable copy button once token is rendered
+    const tokenEl = document.getElementById('token');
+    const copyBtn = document.getElementById('copy-token');
+    new MutationObserver(() => {
+      if (tokenEl.innerText.trim()) {
+        copyBtn.disabled = false;
+      }
+    }).observe(tokenEl, { childList: true, subtree: true });
+
+    // Copy to clipboard
+    copyBtn.addEventListener('click', () => {
+      const txt = tokenEl.innerText.trim();
+      navigator.clipboard.writeText(txt).then(() => {
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => copyBtn.textContent = 'Copy Token', 1500);
+      });
+    });
+  </script>
+</body>
+</html>
